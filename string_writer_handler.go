@@ -14,8 +14,10 @@ func NewStringWriterHandler(writer io.StringWriter) *StringWriterHandler {
 	return &StringWriterHandler{writer: writer}
 }
 
-func (h *StringWriterHandler) UseFormatter(formatter Formatter) {
+func (h *StringWriterHandler) UseFormatter(formatter Formatter) *StringWriterHandler {
 	h.formatter = formatter
+
+	return h
 }
 
 func (h *StringWriterHandler) Handle(log Log) error {

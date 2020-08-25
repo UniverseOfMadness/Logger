@@ -49,15 +49,27 @@ List of formatted logging functions:
  * Logger.Errorf
  * Logger.Criticalf
 
-## Custom handlers
+## Handlers
+List of handlers provided with package:
+ * [StringWriterHandler](https://github.com/UniverseOfMadness/logger/blob/master/string_writer_handler.go) - takes any struct that implements `io.StringWriter` interface
+ and writes all incoming logs to it.
+ * [LevelGroupedHandler](https://github.com/UniverseOfMadness/logger/blob/master/level_grouped_handler.go) - groups handlers by level so each handler is 
+ able to handle logs for specific level. There is also parameter that accept fallback handler for non-defined levels.
+
+### Custom handlers
 Package includes `Handler` interface that can be used to create custom handlers for
 logger. `StringWriterHandler` can be used as example for implementation.
 
-## Custom formatters
+## Formatters
+List of formatters provided with package:
+ * [BasicFormatter](https://github.com/UniverseOfMadness/logger/blob/master/basic_formatter.go) - standard log formatter which produce easy to read message
+ (example: `SimpleWebServer | 2020-08-25T19:06:36+02:00 | INFO | server is listening on 17333 | port:17333`). Allows setting application name and format for log date time.
+
+### Custom formatters
 Package includes `Formatter` interface that can be used to create custom formatters for
 logger. `BasicFormatter` can be used as example for implementation.
 
-## Custom clock
+## Clock
 Default clock used in `Logger` is only a wrapper for built-in Golang `time.*`.
 If application that implements this package requires a special time adjustment then
 interface `Clock` can be used to create custom implementation for the clock.

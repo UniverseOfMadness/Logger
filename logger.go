@@ -9,17 +9,17 @@ type Logger struct {
 	clock           Clock
 	criticalHandler CriticalHandleFunc
 	failureHandler  FailureHandleFunc
-	level           Level
+	config          *config
 }
 
 // New creates new *Logger instance.
 func New(handler Handler) *Logger {
-	return &Logger{handler: handler, clock: NewDefaultClock()}
+	return &Logger{handler: handler, clock: NewDefaultClock(), config: newConfig(LevelDebug)}
 }
 
 // SetLevel changes minimum required Level for Log to be handled (LevelDebug by default - all logs).
 func (l *Logger) SetLevel(level Level) {
-	l.level = level
+	l.config.setLevel(level)
 }
 
 // WithClock allows to set custom implementation for
@@ -115,7 +115,7 @@ func (l *Logger) Criticalf(message string, values ...interface{}) {
 }
 
 func (l *Logger) handleStandardLog(level Level, message string, values []string) (Log, bool) {
-	if !level.EqualOrGreaterThan(l.level) {
+	if !level.EqualOrGreaterThan(l.config.getLevel()) {
 		return Log{}, false
 	}
 
@@ -126,7 +126,7 @@ func (l *Logger) handleStandardLog(level Level, message string, values []string)
 }
 
 func (l *Logger) handleFormattedLog(level Level, message string, values []interface{}) (Log, bool) {
-	if !level.EqualOrGreaterThan(l.level) {
+	if !level.EqualOrGreaterThan(l.config.getLevel()) {
 		return Log{}, false
 	}
 

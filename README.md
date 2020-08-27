@@ -57,6 +57,8 @@ List of handlers provided with package:
  and writes all incoming logs to it.
  * [LevelGroupedHandler](https://github.com/UniverseOfMadness/logger/blob/master/level_grouped_handler.go) - groups handlers by level so each handler is 
  able to handle logs for specific level. There is also parameter that accept fallback handler for non-defined levels.
+ * [InMemoryHandler](https://github.com/UniverseOfMadness/logger/blob/master/in_memory_handler.go) - stores all logs in-memory (as slice). Each log can be popped from slice individually.
+ Handler can also be cleared. Constructor for handler takes `bufferOverflow` as parameter which is max number of logs stored in the handler. Any log added above limit will cause an error.
 
 ### Custom handlers
 Package includes `Handler` interface that can be used to create custom handlers for

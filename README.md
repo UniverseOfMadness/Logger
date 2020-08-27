@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/UniverseOfMadness/logger.svg?branch=master)](https://travis-ci.com/UniverseOfMadness/logger)
+
 # Golang Logger
 Simple logger for Golang application that allows creating custom handling
 methods as well as final format of the message.

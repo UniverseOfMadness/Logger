@@ -74,6 +74,47 @@ Default clock used in `Logger` is only a wrapper for built-in Golang `time.*`.
 If application that implements this package requires a special time adjustment then
 interface `Clock` can be used to create custom implementation for the clock.
 
+## Error Wrapper
+By default, Logger requires checking if error actually occurred before sending it to logs.
+`ErrorWrappedLogger` can handle errors directly with `nil` check. For example:
+```go
+package main
+
+import (
+    "github.com/UniverseOfMadness/logger"
+    "os"
+    "time"
+)
+
+func main() {
+    f := logger.NewBasicFormatter("MyApp", time.RFC3339)
+    
+    h := logger.NewStringWriterHandler(os.Stdout)
+    h.UseFormatter(f)
+
+    l := logger.New(h)
+    err := DoSomethingThatWillFail()
+
+    // handling error log without wrapper
+    if err != nil {
+        l.Error(err.Error())
+    }
+    
+    wr := logger.NewErrorWrappedLogger(l)
+    // handling error log with wrapper
+    wr.OnError(err)
+    
+    // additionally there is a possibility to wrap error with message
+    wr.OnErrorWrapped(err, "something went wrong in %s func: %w", "main")
+}
+```
+
+### Functions
+ * **OnError** - passes Go error message to Logger if error is not `nil`. 
+ * **OnErrorWrapped** - passes Go error message wrapped using `fmt.Errorf` to Logger if error is not `nil`.
+ * **OnCritical** - works the same way as `OnError` but passes message to `Critical` instead of `Error`.
+ * **OnCriticalWrapped** - works the same way as `OnErrorWrapped` but passes message to `Critical` instead of `Error`.
+
 ## Log Levels
  * **Debug** [0] - detailed information, mostly for development or debugging.
  * **Info** [1000] - basic info message for normal application flow (new account, finished process etc.).

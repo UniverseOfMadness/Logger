@@ -20,91 +20,91 @@ func TestLogger_Log(t *testing.T) {
 	expectedData := Data{"key": "val"}
 
 	t.Run("debug", func(t *testing.T) {
-		testLoggerLogWithoutAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithoutAdditionalValues(t, func(logger *MainLogger) {
 			logger.Debug(message)
 		}, expectedMessage, LevelDebug)
 
-		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Debug(message, additionalEvenValues...)
 		}, expectedMessage, LevelDebug, expectedData)
 
-		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Debug(message, additionalOddValues...)
 		})
 
-		testLoggerLogfWithFormatting(t, func(logger *Logger) {
+		testLoggerLogfWithFormatting(t, func(logger *MainLogger) {
 			logger.Debugf(messageWithFormatting, "formatted")
 		}, expectedFormattedMessage, LevelDebug)
 	})
 
 	t.Run("info", func(t *testing.T) {
-		testLoggerLogWithoutAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithoutAdditionalValues(t, func(logger *MainLogger) {
 			logger.Info(message)
 		}, expectedMessage, LevelInfo)
 
-		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Info(message, additionalEvenValues...)
 		}, expectedMessage, LevelInfo, expectedData)
 
-		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Info(message, additionalOddValues...)
 		})
 
-		testLoggerLogfWithFormatting(t, func(logger *Logger) {
+		testLoggerLogfWithFormatting(t, func(logger *MainLogger) {
 			logger.Infof(messageWithFormatting, "formatted")
 		}, expectedFormattedMessage, LevelInfo)
 	})
 
 	t.Run("warning", func(t *testing.T) {
-		testLoggerLogWithoutAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithoutAdditionalValues(t, func(logger *MainLogger) {
 			logger.Warning(message)
 		}, expectedMessage, LevelWarning)
 
-		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Warning(message, additionalEvenValues...)
 		}, expectedMessage, LevelWarning, expectedData)
 
-		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Warning(message, additionalOddValues...)
 		})
 
-		testLoggerLogfWithFormatting(t, func(logger *Logger) {
+		testLoggerLogfWithFormatting(t, func(logger *MainLogger) {
 			logger.Warningf(messageWithFormatting, "formatted")
 		}, expectedFormattedMessage, LevelWarning)
 	})
 
 	t.Run("error", func(t *testing.T) {
-		testLoggerLogWithoutAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithoutAdditionalValues(t, func(logger *MainLogger) {
 			logger.Error(message)
 		}, expectedMessage, LevelError)
 
-		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Error(message, additionalEvenValues...)
 		}, expectedMessage, LevelError, expectedData)
 
-		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Error(message, additionalOddValues...)
 		})
 
-		testLoggerLogfWithFormatting(t, func(logger *Logger) {
+		testLoggerLogfWithFormatting(t, func(logger *MainLogger) {
 			logger.Errorf(messageWithFormatting, "formatted")
 		}, expectedFormattedMessage, LevelError)
 	})
 
 	t.Run("critical", func(t *testing.T) {
-		testLoggerLogWithoutAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithoutAdditionalValues(t, func(logger *MainLogger) {
 			logger.Critical(message)
 		}, expectedMessage, LevelCritical)
 
-		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithEvenNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Critical(message, additionalEvenValues...)
 		}, expectedMessage, LevelCritical, expectedData)
 
-		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *Logger) {
+		testLoggerLogWithOddNumberOfAdditionalValues(t, func(logger *MainLogger) {
 			logger.Critical(message, additionalOddValues...)
 		})
 
-		testLoggerLogfWithFormatting(t, func(logger *Logger) {
+		testLoggerLogfWithFormatting(t, func(logger *MainLogger) {
 			logger.Criticalf(messageWithFormatting, "formatted")
 		}, expectedFormattedMessage, LevelCritical)
 	})
@@ -232,7 +232,7 @@ func TestLogger_Log_WithSetLevel(t *testing.T) {
 
 func testLoggerLogWithoutAdditionalValues(
 	t *testing.T,
-	loggerCallback func(logger *Logger),
+	loggerCallback func(logger *MainLogger),
 	expectedMessage string,
 	expectedLevel Level,
 ) {
@@ -260,7 +260,7 @@ func testLoggerLogWithoutAdditionalValues(
 
 func testLoggerLogWithEvenNumberOfAdditionalValues(
 	t *testing.T,
-	loggerCallback func(logger *Logger),
+	loggerCallback func(logger *MainLogger),
 	expectedMessage string,
 	expectedLevel Level,
 	expectedData Data,
@@ -287,7 +287,7 @@ func testLoggerLogWithEvenNumberOfAdditionalValues(
 	mHandler.AssertExpectations(t)
 }
 
-func testLoggerLogWithOddNumberOfAdditionalValues(t *testing.T, loggerCallback func(logger *Logger)) {
+func testLoggerLogWithOddNumberOfAdditionalValues(t *testing.T, loggerCallback func(logger *MainLogger)) {
 	mClock := &mockClock{}
 	mHandler := &mockHandler{}
 
@@ -304,7 +304,7 @@ func testLoggerLogWithOddNumberOfAdditionalValues(t *testing.T, loggerCallback f
 
 func testLoggerLogfWithFormatting(
 	t *testing.T,
-	loggerCallback func(logger *Logger),
+	loggerCallback func(logger *MainLogger),
 	expectedMessage string,
 	expectedLevel Level,
 ) {

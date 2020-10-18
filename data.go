@@ -1,7 +1,7 @@
 package logger
 
 // Contains key:value representation
-// of data parameters provided to standard Logger
+// of data parameters provided to standard MainLogger
 // functions.
 type Data map[string]string
 

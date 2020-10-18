@@ -3,27 +3,27 @@ package logger
 import "fmt"
 
 type ErrorWrappedLogger struct {
-	*Logger
+	*MainLogger
 }
 
-func NewErrorWrappedLogger(logger *Logger) *ErrorWrappedLogger {
-	return &ErrorWrappedLogger{Logger: logger}
+func NewErrorWrappedLogger(logger *MainLogger) *ErrorWrappedLogger {
+	return &ErrorWrappedLogger{MainLogger: logger}
 }
 
 func (w *ErrorWrappedLogger) OnError(err error, values ...string) {
-	w.on(w.Logger.Error, err, values...)
+	w.on(w.MainLogger.Error, err, values...)
 }
 
 func (w *ErrorWrappedLogger) OnErrorWrapped(err error, message string, values ...interface{}) {
-	w.onWrapped(w.Logger.Error, err, message, values...)
+	w.onWrapped(w.MainLogger.Error, err, message, values...)
 }
 
 func (w *ErrorWrappedLogger) OnCritical(err error, values ...string) {
-	w.on(w.Logger.Critical, err, values...)
+	w.on(w.MainLogger.Critical, err, values...)
 }
 
 func (w *ErrorWrappedLogger) OnCriticalWrapped(err error, message string, values ...interface{}) {
-	w.onWrapped(w.Logger.Critical, err, message, values...)
+	w.onWrapped(w.MainLogger.Critical, err, message, values...)
 }
 
 func (w *ErrorWrappedLogger) on(call func(message string, values ...string), err error, values ...string) {

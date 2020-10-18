@@ -22,6 +22,8 @@ type (
 		// Handle processes given log message according to
 		// its implementation.
 		Handle(log Log) error
+		// HandleBatch can process a set of messages at once.
+		HandleBatch(logs []Log) error
 	}
 	// Formatters creates final presentation of message.
 	// Formatter must provide log with prepared FormattedLog.FormattedMessage.

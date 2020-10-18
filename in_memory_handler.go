@@ -28,6 +28,19 @@ func (h *InMemoryHandler) Handle(log Log) error {
 	return nil
 }
 
+func (h *InMemoryHandler) HandleBatch(logs []Log) error {
+	h.lock.Lock()
+	defer h.lock.Unlock()
+
+	if h.bufferOverflow != 0 && uint(len(h.logs)+len(logs)) > h.bufferOverflow {
+		return fmt.Errorf("InMemoryHandler - number of logs exceeded buffer limit (%d records)", h.bufferOverflow)
+	}
+
+	h.logs = append(h.logs, logs...)
+
+	return nil
+}
+
 func (h *InMemoryHandler) IsEmpty() bool {
 	h.lock.Lock()
 	defer h.lock.Unlock()

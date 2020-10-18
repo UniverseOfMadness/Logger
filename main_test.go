@@ -17,6 +17,10 @@ type mockHandler struct {
 	mock.Mock
 }
 
+func (h *mockHandler) HandleBatch(logs []Log) error {
+	return h.Called(logs).Error(0)
+}
+
 func (h *mockHandler) Handle(log Log) error {
 	return h.Called(log).Error(0)
 }

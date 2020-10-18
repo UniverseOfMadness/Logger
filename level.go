@@ -2,8 +2,11 @@ package logger
 
 import "fmt"
 
-type Level uint32
-type LevelName string
+type (
+	Level     uint32
+	LevelName string
+	Levels    []Level
+)
 
 const (
 	LevelDebug    = Level(0)
@@ -63,4 +66,17 @@ func (l Level) Int() int {
 
 func (ln LevelName) String() string {
 	return string(ln)
+}
+
+func (l Levels) Len() int {
+	return len(l)
+}
+
+func (l Levels) Less(i, j int) bool {
+	return l[i] < l[j]
+}
+
+func (l Levels) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
+
 }

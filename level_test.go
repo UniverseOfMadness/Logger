@@ -2,6 +2,7 @@ package logger
 
 import (
 	"github.com/stretchr/testify/assert"
+	"sort"
 	"testing"
 )
 
@@ -51,4 +52,13 @@ func TestLevelName_Level(t *testing.T) {
 	assert.PanicsWithError(t, "unknown level name testing", func() {
 		LevelName("testing").Level()
 	})
+}
+
+func TestLevels_Sorting(t *testing.T) {
+	t.Parallel()
+
+	lvl := Levels{LevelInfo, LevelCritical, LevelDebug, LevelError, LevelWarning}
+	sort.Sort(lvl)
+
+	assert.Equal(t, Levels{LevelDebug, LevelInfo, LevelWarning, LevelError, LevelCritical}, lvl)
 }

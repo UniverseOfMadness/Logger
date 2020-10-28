@@ -2,6 +2,7 @@ package logger
 
 import (
 	"github.com/stretchr/testify/mock"
+	"os"
 	"time"
 )
 
@@ -41,4 +42,31 @@ func (w *mockStringWriter) WriteString(s string) (n int, err error) {
 	args := w.Called(s)
 
 	return args.Int(0), args.Error(1)
+}
+
+type mockFilesystem struct {
+	mock.Mock
+}
+
+func (m *mockFilesystem) OpenFile(name string, flag int, perm os.FileMode) (File, error) {
+	args := m.Called(name, flag, perm)
+	return args.Get(0).(File), args.Error(1)
+}
+
+type mockFile struct {
+	mock.Mock
+}
+
+func (m *mockFile) WriteString(s string) (n int, err error) {
+	args := m.Called(s)
+	return args.Int(0), args.Error(1)
+}
+
+func (m *mockFile) Write(p []byte) (n int, err error) {
+	args := m.Called(p)
+	return args.Int(0), args.Error(1)
+}
+
+func (m *mockFile) Close() error {
+	return m.Called().Error(0)
 }

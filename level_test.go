@@ -29,29 +29,59 @@ func TestLevelName_String(t *testing.T) {
 func TestLevel_Name(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, LevelDebug.Name(), LevelNameDebug)
-	assert.Equal(t, LevelInfo.Name(), LevelNameInfo)
-	assert.Equal(t, LevelWarning.Name(), LevelNameWarning)
-	assert.Equal(t, LevelError.Name(), LevelNameError)
-	assert.Equal(t, LevelCritical.Name(), LevelNameCritical)
+	ld, ldErr := LevelDebug.Name()
+	assert.Equal(t, ld, LevelNameDebug)
+	assert.NoError(t, ldErr)
 
-	assert.PanicsWithError(t, "unknown level 9999", func() {
-		Level(9999).Name()
-	})
+	li, liErr := LevelInfo.Name()
+	assert.Equal(t, li, LevelNameInfo)
+	assert.NoError(t, liErr)
+
+	lw, lwErr := LevelWarning.Name()
+	assert.Equal(t, lw, LevelNameWarning)
+	assert.NoError(t, lwErr)
+
+	le, leErr := LevelError.Name()
+	assert.Equal(t, le, LevelNameError)
+	assert.NoError(t, leErr)
+
+	lc, lcErr := LevelCritical.Name()
+	assert.Equal(t, lc, LevelNameCritical)
+	assert.NoError(t, lcErr)
+
+	ul, ulErr := Level(9999).Name()
+	assert.Empty(t, ul)
+	assert.Error(t, ulErr)
+	assert.EqualError(t, ulErr, ErrLevelNameMappingNotFound.Error())
 }
 
 func TestLevelName_Level(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, LevelNameDebug.Level(), LevelDebug)
-	assert.Equal(t, LevelNameInfo.Level(), LevelInfo)
-	assert.Equal(t, LevelNameWarning.Level(), LevelWarning)
-	assert.Equal(t, LevelNameError.Level(), LevelError)
-	assert.Equal(t, LevelNameCritical.Level(), LevelCritical)
+	ld, ldErr := LevelNameDebug.Level()
+	assert.Equal(t, ld, LevelDebug)
+	assert.NoError(t, ldErr)
 
-	assert.PanicsWithError(t, "unknown level name testing", func() {
-		LevelName("testing").Level()
-	})
+	li, liErr := LevelNameInfo.Level()
+	assert.Equal(t, li, LevelInfo)
+	assert.NoError(t, liErr)
+
+	lw, lwErr := LevelNameWarning.Level()
+	assert.Equal(t, lw, LevelWarning)
+	assert.NoError(t, lwErr)
+
+	le, leErr := LevelNameError.Level()
+	assert.Equal(t, le, LevelError)
+	assert.NoError(t, leErr)
+
+	lc, lcErr := LevelNameCritical.Level()
+	assert.Equal(t, lc, LevelCritical)
+	assert.NoError(t, lcErr)
+
+	ul, ulErr := LevelName("testing").Level()
+	assert.Equal(t, ul, Level(0))
+	assert.Error(t, ulErr)
+	assert.EqualError(t, ulErr, ErrLevelMappingNotFound.Error())
 }
 
 func TestLevels_Sorting(t *testing.T) {

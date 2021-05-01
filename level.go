@@ -1,6 +1,8 @@
 package logger
 
-import "fmt"
+import (
+	"errors"
+)
 
 type (
 	Level     uint32
@@ -22,42 +24,48 @@ const (
 	LevelNameCritical = LevelName("critical")
 )
 
+var (
+	ErrLevelMappingNotFound     = errors.New("level cannot be mapped to level name")
+	ErrLevelNameMappingNotFound = errors.New("level name cannot be mapped to level")
+
+	levelsMapping = map[LevelName]Level{
+		LevelNameDebug:    LevelDebug,
+		LevelNameInfo:     LevelInfo,
+		LevelNameWarning:  LevelWarning,
+		LevelNameError:    LevelError,
+		LevelNameCritical: LevelCritical,
+	}
+	levelsReverseMapping = map[Level]LevelName{
+		LevelDebug:    LevelNameDebug,
+		LevelInfo:     LevelNameInfo,
+		LevelWarning:  LevelNameWarning,
+		LevelError:    LevelNameError,
+		LevelCritical: LevelNameCritical,
+	}
+)
+
 func (l Level) EqualOrGreaterThan(level Level) bool {
 	return l >= level
 }
 
-func (l Level) Name() LevelName {
-	switch l {
-	case LevelDebug:
-		return LevelNameDebug
-	case LevelInfo:
-		return LevelNameInfo
-	case LevelWarning:
-		return LevelNameWarning
-	case LevelError:
-		return LevelNameError
-	case LevelCritical:
-		return LevelNameCritical
+func (l Level) Name() (LevelName, error) {
+	val, ok := levelsReverseMapping[l]
+
+	if !ok {
+		return "", ErrLevelNameMappingNotFound
 	}
 
-	panic(fmt.Errorf("unknown level %d", l))
+	return val, nil
 }
 
-func (ln LevelName) Level() Level {
-	switch ln {
-	case LevelNameDebug:
-		return LevelDebug
-	case LevelNameInfo:
-		return LevelInfo
-	case LevelNameWarning:
-		return LevelWarning
-	case LevelNameError:
-		return LevelError
-	case LevelNameCritical:
-		return LevelCritical
+func (ln LevelName) Level() (Level, error) {
+	val, ok := levelsMapping[ln]
+
+	if !ok {
+		return 0, ErrLevelMappingNotFound
 	}
 
-	panic(fmt.Errorf("unknown level name %s", ln))
+	return val, nil
 }
 
 func (l Level) Int() int {

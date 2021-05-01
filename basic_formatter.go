@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -23,12 +24,18 @@ func (f *BasicFormatter) Format(log Log) FormattedLog {
 }
 
 func (f *BasicFormatter) createFormattedMessage(log Log) string {
+	ln, lnErr := log.Level.Name()
+
+	if errors.Is(lnErr, ErrLevelNameMappingNotFound) {
+		ln = "unknown"
+	}
+
 	res := &strings.Builder{}
 	res.WriteString(f.appName)
 	res.WriteString(" | ")
 	res.WriteString(log.CreatedAt.Format(f.dateFormat))
 	res.WriteString(" | ")
-	res.WriteString(strings.ToUpper(log.Level.Name().String()))
+	res.WriteString(strings.ToUpper(ln.String()))
 	res.WriteString(" | ")
 	res.WriteString(f.applyDataOnMessage(log.Message, log.Data))
 

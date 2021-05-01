@@ -40,10 +40,10 @@ func TestLevelGroupedHandler_Handle(t *testing.T) {
 	mHandler2 := &mockHandler{}
 	mHandler2.On("Handle", logError).Return(nil)
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})
@@ -96,10 +96,10 @@ func TestLevelGroupedHandler_HandleBatch(t *testing.T) {
 	mHandler2 := &mockHandler{}
 	mHandler2.On("HandleBatch", []Log{logs[2]}).Return(nil)
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})
@@ -146,10 +146,10 @@ func TestLevelGroupedHandler_Handle_FallbackHandlerFailure(t *testing.T) {
 	mHandler2 := &mockHandler{}
 	mHandler2.On("Handle", logError).Return(nil)
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})
@@ -204,10 +204,10 @@ func TestLevelGroupedHandler_Handle_GroupedHandlerFailure(t *testing.T) {
 	mHandler2 := &mockHandler{}
 	mHandler2.On("Handle", logError).Return(nil)
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})
@@ -261,10 +261,10 @@ func TestLevelGroupedHandler_HandleBatch_FallbackHandlerFailure(t *testing.T) {
 
 	mHandler2 := &mockHandler{}
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})
@@ -313,10 +313,10 @@ func TestLevelGroupedHandler_HandleBatch_GroupedHandlerFailure(t *testing.T) {
 	mHandler2 := &mockHandler{}
 	mHandler2.On("HandleBatch", []Log{logs[2]}).Return(errors.New("test"))
 
-	handler := NewLevelGroupedHandler(mFallbackHandler, &LevelGroup{
+	handler := NewLevelGroupedHandler(mFallbackHandler, LevelGroup{
 		Levels:  []Level{LevelInfo},
 		Handler: mHandler1,
-	}, &LevelGroup{
+	}, LevelGroup{
 		Levels:  []Level{LevelError},
 		Handler: mHandler2,
 	})

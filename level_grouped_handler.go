@@ -15,7 +15,7 @@ type LevelGroupedHandler struct {
 	fallbackHandler Handler
 }
 
-func NewLevelGroupedHandler(fallbackHandler Handler, groups ...*LevelGroup) *LevelGroupedHandler {
+func NewLevelGroupedHandler(fallbackHandler Handler, groups ...LevelGroup) *LevelGroupedHandler {
 	h := &LevelGroupedHandler{fallbackHandler: fallbackHandler, handlers: make(map[Level][]Handler)}
 	h.createHandlersList(groups)
 
@@ -78,7 +78,7 @@ func (h *LevelGroupedHandler) HandleBatch(logs []Log) error {
 	return nil
 }
 
-func (h *LevelGroupedHandler) createHandlersList(groups []*LevelGroup) {
+func (h *LevelGroupedHandler) createHandlersList(groups []LevelGroup) {
 	for _, group := range groups {
 		for _, level := range group.Levels {
 			h.handlers[level] = append(h.handlers[level], group.Handler)
